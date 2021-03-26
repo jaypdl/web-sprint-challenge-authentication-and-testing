@@ -3,17 +3,17 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const Auth = require('./auth-model')
 const { JWT_SECRET, ROUNDS } = require('../secrets')
-const { checkUserExists, checkRequestBody } = require('./auth-middleware')
+const { checkUserExists, validateRequestBody } = require('./auth-middleware')
 
 
 router.post(
   '/register',
-  checkRequestBody,
+  validateRequestBody,
   checkUserExists,
   async (req, res, next) => {
     try {
       if (req.userInfo) {
-        res.status(400).json({ message: "username taken" })
+        res.status(400).json({ message: 'username taken' })
       } else {
         const { username, password } = req.body
         const hash = bcrypt.hashSync(password, ROUNDS)
@@ -51,9 +51,18 @@ router.post(
   }
 )
 
-router.post('/login', (req, res, next) => {
-  res.end('implement login, please!');
-  /*
+router.post(
+  
+  '/login', validateRequestBody, checkUserExists, (req, res, next) => {
+      try {
+        const userInfo = req.userInfo
+        console.log(userInfo)
+        // if (!req)
+        res.end('implement login, please!')
+      } catch (err) {
+        next()
+      }
+      /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
 
@@ -76,6 +85,8 @@ router.post('/login', (req, res, next) => {
     4- On FAILED login due to `username` not existing in the db, or `password` being incorrect,
       the response body should include a string exactly as follows: "invalid credentials".
   */
-});
+    }
+
+)
 
 module.exports = router;
