@@ -5,7 +5,7 @@ function findAll() {
 }
 
 function findById(id) {
-  return db('users').where('id', id)
+  return db('users').where('id', id).first()
 }
 
 async function findBy(filter) {

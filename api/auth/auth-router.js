@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const Auth = require('./auth-model')
 const { JWT_SECRET, ROUNDS } = require('../secrets')
 const { checkUserExists, checkRequestBody } = require('./auth-middleware')
 
@@ -16,8 +17,8 @@ router.post(
       } else {
         const { username, password } = req.body
         const hash = bcrypt.hashSync(password, ROUNDS)
-
-        
+        const newUser = await Auth.insertUser({ username, password: hash })
+        res.status(201).json(newUser)
       }
     } catch (err) {
       next(err)
