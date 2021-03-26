@@ -57,9 +57,7 @@ router.post(
   checkUserExists,
   (req, res, next) => {
     try {
-      console.log(req.userInfo)
       if (!req.userInfo) {
-        
         res.status(422).json({ message: 'invalid credentials' })
       } else if (bcrypt.compareSync(req.body.password, req.userInfo.password)) {
         const token = buildToken(req.userInfo)
