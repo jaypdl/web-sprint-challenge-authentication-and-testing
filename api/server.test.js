@@ -14,8 +14,9 @@ beforeAll(async () => {
 beforeEach(async () => {
   await db('users').truncate()
 })
-afterAll(async () => {
+afterAll(async (done) => {
   await db.destroy()
+  done()
 })
 
 describe('[POST] /api/auth/register', () => {
