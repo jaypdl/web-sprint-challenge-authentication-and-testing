@@ -52,19 +52,26 @@ router.post(
 )
 
 router.post(
-  
-  '/login', validateRequestBody, checkUserExists, (req, res, next) => {
+  '/login',
+  validateRequestBody,
+  checkUserExists,
+  (req, res, next) => {
     try {
-      if (bcrypt.compareSync(req.body.passwrod, req.userInfo.password)) {
+      console.log(req.userInfo)
+      if (!req.userInfo) {
+        
+        res.status(422).json({ message: 'invalid credentials' })
+      } else if (bcrypt.compareSync(req.body.password, req.userInfo.password)) {
         const token = buildToken(req.userInfo)
         res.json({
           message: `welcome, ${req.userInfo.username}`,
           token: token
         })
+      } else {
+        res.status(422).json({ message: 'invalid credentials' })
       }
-      res.end('implement login, please!')
     } catch (err) {
-      next()
+      next(err)
     }
     /*
     IMPLEMENT
