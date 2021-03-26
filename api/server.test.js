@@ -17,10 +17,9 @@ afterAll(async () => {
   await db.destroy()
 })
 describe('[POST] /api/auth/register', () => {
-  it('it responds with the new user', async () => {
+  it('it responds with a 201', async () => {
     const newUser = { username: 'dude', password: '123' }
-    const expectedRes = { id: 1, username: 'dude', password: '123' }
     const res = await request(server).post('/api/auth/register').send(newUser)
-    expect(res.body).toMatchObject(expectedRes)
+    expect(res.status).toBe(201)
   })
 })
