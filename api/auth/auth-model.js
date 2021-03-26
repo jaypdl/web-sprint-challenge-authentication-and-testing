@@ -8,8 +8,9 @@ function findById(id) {
   return db('users').where('id', id)
 }
 
-function findBy(filter) {
-  return db('users').where(filter).orderBy('id')
+async function findBy(filter) {
+  const [found] = await db('users').where(filter).orderBy('id')
+  return found
 }
 
 async function insertUser(user) {

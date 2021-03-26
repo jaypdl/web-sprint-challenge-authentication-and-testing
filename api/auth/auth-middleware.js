@@ -3,8 +3,8 @@ const Auth = require('./auth-model')
 const checkUserExists = async (req, res, next) => {
   try {
     const { username } = req.body
-    const user = await Auth.findBy({ username }).first()
-    req.userInfo = user
+    const user = await Auth.findBy({ username })
+    req.userInfo = await user
     next()
   } catch (err) {
     next(err)
