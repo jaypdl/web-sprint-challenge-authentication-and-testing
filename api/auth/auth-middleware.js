@@ -13,7 +13,7 @@ const checkUserExists = async (req, res, next) => {
 
 const validateRequestBody = (req, res, next) => {
   const { username, password } = req.body
-  if (!username?.trim() || !password?.trim()) {
+  if (!username || !password || !username.trim() || !password.trim()) {
     res.status(400).json({ message: 'username and password required' })
   } else {
     req.body.username = req.body.username.trim().toLowerCase()
